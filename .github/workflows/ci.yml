@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, next]
+  pull_request:
+    branches: [main, next]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node: [18, 20]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    name: Build package with Node.js ${{matrix.node}} on ${{matrix.os}}
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{matrix.node}}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node}}
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Lint
+        run: npm run lint
+
+      # - name: Test
+      #   run: npm run test
+
+      - name: Build
+        run: npm run build
+
+
