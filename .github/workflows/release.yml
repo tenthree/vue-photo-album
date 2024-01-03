@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -26,10 +26,10 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        uses: npx ci
+        run: npm ci
 
       - name: Install semantic-release extra plugin
-        uses: npm install -D @semantic-release/changelog @semantic-release/github
+        run: npm install -D @semantic-release/changelog @semantic-release/github
 
       # - name: Test
       #   run: npm run test

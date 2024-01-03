@@ -76,7 +76,7 @@ const columnWrapper = computed(() => props.renderer ?? 'div')
 </script>
 
 <template>
-  <Component :is="columnWrapper" :class="className" :style="style">
+  <component :is="columnWrapper" :class="className" :style="style">
     <slot />
-  </Component>
+  </component>
 </template>

@@ -30,7 +30,7 @@ const rowWrapper = computed(() => props.renderer ?? 'div')
 </script>
 
 <template>
-  <Component :is="rowWrapper" :class="className" :style="style">
+  <component :is="rowWrapper" :class="className" :style="style">
     <slot />
-  </Component>
+  </component>
 </template>

@@ -1,12 +1,6 @@
 <script setup lang="ts" generic="T extends Photo = Photo">
 import type { Component } from 'vue'
-import {
-  CSSProperties,
-  ImgHTMLAttributes,
-  computed,
-  shallowRef,
-  toRefs
-} from 'vue'
+import { CSSProperties, ImgHTMLAttributes, computed, shallowRef } from 'vue'
 import { LayoutOptions, Photo, PhotoLayout } from '@/types'
 import round from '@/utils/round'
 
@@ -19,7 +13,7 @@ type PhotoRendererProps = {
 }
 
 const props = defineProps<PhotoRendererProps>()
-const { photo, layout, layoutOptions, renderer, clickable } = toRefs(props)
+// const { photo, layout, layoutOptions, renderer, clickable } = toRefs(props)
 
 function calcWidth(
   base: string,
@@ -86,18 +80,18 @@ function srcSetAndSizes<T extends Photo = Photo>(
   return { srcset, sizes }
 }
 
-const thumbnail = computed(() => photo.value.srcSet?.[0].src)
+const thumbnail = computed(() => props.photo.srcSet?.[0].src)
 
 const wrapperStyle = computed<CSSProperties>(() => {
-  const width = cssPhotoWidth(layout.value, layoutOptions.value)
-  const aspectRatio = photo.value.width / photo.value.height
-  const padding = `${layoutOptions.value.padding}px`
+  const width = cssPhotoWidth(props.layout, props.layoutOptions)
+  const aspectRatio = props.photo.width / props.photo.height
+  const padding = `${props.layoutOptions.padding}px`
   const marginBottom =
-    ['columns', 'masonry'].includes(layoutOptions.value.layout) &&
-    layout.value.photoIndex < layout.value.photosCount - 1
-      ? `${layoutOptions.value.spacing}px`
+    ['columns', 'masonry'].includes(props.layoutOptions.layout) &&
+    props.layout.photoIndex < props.layout.photosCount - 1
+      ? `${props.layoutOptions.spacing}px`
       : undefined
-  const cursor = clickable.value ? 'pointer' : undefined
+  const cursor = props.clickable ? 'pointer' : undefined
   return {
     display: 'block',
     boxSizing: 'content-box',
@@ -119,11 +113,11 @@ const wrappedStyle = shallowRef<CSSProperties>({
 
 const imageProps = computed<ImgHTMLAttributes>(() => {
   const className = 'photo-album__photo'
-  const src = photo.value.src
-  const alt = photo.value.alt
-  const title = photo.value.title
+  const src = props.photo.src
+  const alt = props.photo.alt
+  const title = props.photo.title
   const style =
-    renderer.value === undefined ? wrapperStyle.value : wrappedStyle.value
+    props.renderer === undefined ? wrapperStyle.value : wrappedStyle.value
   const loading = 'lazy'
   const decoding = 'async'
   return {
@@ -134,15 +128,17 @@ const imageProps = computed<ImgHTMLAttributes>(() => {
     style,
     loading,
     decoding,
-    ...srcSetAndSizes(photo.value, layout.value, layoutOptions.value)
+    ...srcSetAndSizes(props.photo, props.layout, props.layoutOptions)
   }
 })
 </script>
 
 <template>
-  <Component v-if="renderer" :is="renderer" :style="wrapperStyle">
-    <img :src="thumbnail" v-bind="imageProps" />
-  </Component>
+  <template v-if="renderer">
+    <component :is="renderer" :style="wrapperStyle">
+      <img :src="thumbnail" v-bind="imageProps" />
+    </component>
+  </template>
   <template v-else>
     <img :src="thumbnail" v-bind="imageProps" />
   </template>
