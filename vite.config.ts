@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
+      rollupTypes: true,
       include: ['./src/**/*.ts', './src/**/*.vue']
     })
   ],

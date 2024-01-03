@@ -30,6 +30,13 @@
     "url": "https://github.com/tenthree/vue-photo-album.git"
   },
   "homepage": "https://github.com/tenthree/vue-photo-album",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "dev": "vite --config dev/vite.config.ts",
     "lint": "eslint .",
