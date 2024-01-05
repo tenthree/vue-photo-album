@@ -1,4 +1,4 @@
-import type { Component } from 'vue'
+import type { Component, ImgHTMLAttributes } from 'vue'
 
 export const LayoutTypes = ['rows', 'columns', 'masonry'] as const
 export type LayoutType = (typeof LayoutTypes)[number]
@@ -26,14 +26,14 @@ export type PhotoAlbumProps<T extends Photo = Photo> = {
   defaultContainerWidth?: number
   // The event handler for clicking on a photo item
   onClick?: PhotoClickHandler<T>
-  // Give a custom single root component with default <slot /> as container renderer component.
+  // Give a custom single root component as container renderer component that includes a default <slot />.
   containerRenderer?: Component
-  // Give a custom single root component with default <slot /> as row renderer component.
+  // Give a custom single root component as row renderer component that includes a default <slot />.
   rowRenderer?: Component
-  // Give a custom single root component with default <slot /> as column renderer component.
+  // Give a custom single root component as column renderer component that includes a default <slot />.
   columnRenderer?: Component
-  // Give a custom single root component with default <slot /> as photo renderer component
-  photoRenderer?: Component
+  // Give a custom single root component as photo renderer component that includes defineProps<PhotoRendererMetadata> and an optional default <slot />.
+  photoRenderer?: Component<PhotoRendererMetadata>
 }
 
 export type PhotoAlbumEmits<T extends Photo = Photo> = {
@@ -53,6 +53,13 @@ export type PhotoClickPayload<T extends Photo = Photo> = {
 export type PhotoClickHandler<T extends Photo = Photo> = (
   payload: PhotoClickPayload<T>
 ) => void
+
+export type PhotoRendererMetadata<T extends Photo = Photo> = {
+  photo: T
+  layout: PhotoLayout
+  imageProps: ImgHTMLAttributes
+  clickable: boolean
+}
 
 export type Image = {
   src: string

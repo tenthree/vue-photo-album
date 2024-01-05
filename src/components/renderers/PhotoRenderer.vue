@@ -1,19 +1,23 @@
 <script setup lang="ts" generic="T extends Photo = Photo">
 import type { Component } from 'vue'
 import { CSSProperties, ImgHTMLAttributes, computed, shallowRef } from 'vue'
-import { LayoutOptions, Photo, PhotoLayout } from '@/types'
+import {
+  LayoutOptions,
+  Photo,
+  PhotoLayout,
+  PhotoRendererMetadata
+} from '@/types'
 import round from '@/utils/round'
 
 type PhotoRendererProps = {
   photo: T
   layout: PhotoLayout
   layoutOptions: LayoutOptions
-  renderer?: Component
+  renderer?: Component<PhotoRendererMetadata>
   clickable?: boolean
 }
 
 const props = defineProps<PhotoRendererProps>()
-// const { photo, layout, layoutOptions, renderer, clickable } = toRefs(props)
 
 function calcWidth(
   base: string,
@@ -80,8 +84,6 @@ function srcSetAndSizes<T extends Photo = Photo>(
   return { srcset, sizes }
 }
 
-const thumbnail = computed(() => props.photo.srcSet?.[0].src)
-
 const wrapperStyle = computed<CSSProperties>(() => {
   const width = cssPhotoWidth(props.layout, props.layoutOptions)
   const aspectRatio = props.photo.width / props.photo.height
@@ -131,15 +133,22 @@ const imageProps = computed<ImgHTMLAttributes>(() => {
     ...srcSetAndSizes(props.photo, props.layout, props.layoutOptions)
   }
 })
+
+const metadata = computed<PhotoRendererMetadata>(() => ({
+  photo: props.photo,
+  layout: props.layout,
+  clickable: props.clickable,
+  imageProps: imageProps.value
+}))
 </script>
 
 <template>
   <template v-if="renderer">
-    <component :is="renderer" :style="wrapperStyle">
-      <img :src="thumbnail" v-bind="imageProps" />
+    <component :is="renderer" :style="wrapperStyle" v-bind="metadata">
+      <img v-bind="imageProps" />
     </component>
   </template>
   <template v-else>
-    <img :src="thumbnail" v-bind="imageProps" />
+    <img v-bind="imageProps" />
   </template>
 </template>
