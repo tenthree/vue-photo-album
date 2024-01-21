@@ -30,6 +30,7 @@ const columnsCount = computed(() => masonryLayout.value?.length ?? 0)
     v-for="(column, columnIndex) in masonryLayout"
     :key="`masonry-column-${columnIndex}`"
     :layout-options="layoutOptions"
+    :column-data="column"
     :column-index="columnIndex"
     :columns-count="columnsCount"
     :renderer="columnRenderer"

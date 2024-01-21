@@ -27,11 +27,11 @@ export type PhotoAlbumProps<T extends Photo = Photo> = {
   // The event handler for clicking on a photo item
   onClick?: PhotoClickHandler<T>
   // Give a custom single root component as container renderer component that includes a default <slot />.
-  containerRenderer?: Component
+  containerRenderer?: Component<ContainerRendererMetadata>
   // Give a custom single root component as row renderer component that includes a default <slot />.
-  rowRenderer?: Component
+  rowRenderer?: Component<RowRendererMetadata>
   // Give a custom single root component as column renderer component that includes a default <slot />.
-  columnRenderer?: Component
+  columnRenderer?: Component<ColumnRendererMetadata>
   // Give a custom single root component as photo renderer component that includes defineProps<PhotoRendererMetadata> and an optional default <slot />.
   photoRenderer?: Component<PhotoRendererMetadata>
 }
@@ -54,12 +54,46 @@ export type PhotoClickHandler<T extends Photo = Photo> = (
   payload: PhotoClickPayload<T>
 ) => void
 
-export type PhotoRendererMetadata<T extends Photo = Photo> = {
+export type PhotoRendererProps<T extends Photo = Photo> = {
   photo: T
   layout: PhotoLayout
-  imageProps: ImgHTMLAttributes
-  clickable: boolean
+  layoutOptions: LayoutOptions
+  clickable?: boolean
+  renderer?: Component<PhotoRendererMetadata>
 }
+
+export type RowRendererProps<T extends Photo = Photo> = {
+  layoutOptions: RowsLayoutOptions
+  rowData: { photo: T; layout: PhotoLayout }[]
+  rowIndex: number
+  rowsCount: number
+  renderer?: Component<RowRendererMetadata>
+}
+
+export type ColumnRendererProps<T extends Photo = Photo> = {
+  layoutOptions: ColumnsLayoutOptions
+  columnData: { photo: T; layout: PhotoLayout }[]
+  columnIndex: number
+  columnsCount: number
+  columnsGaps?: number[]
+  columnsRatios?: number[]
+  renderer?: Component<ColumnRendererMetadata>
+}
+
+export type ContainerRendererProps<T extends Photo = Photo> = {
+  photos: T[]
+  layoutOptions: LayoutOptions
+}
+
+export type PhotoRendererMetadata = Omit<PhotoRendererProps, 'renderer'> & {
+  imageProps: ImgHTMLAttributes
+}
+
+export type RowRendererMetadata = Omit<RowRendererProps, 'renderer'>
+
+export type ColumnRendererMetadata = Omit<ColumnRendererProps, 'renderer'>
+
+export type ContainerRendererMetadata = ContainerRendererProps
 
 export type Image = {
   src: string

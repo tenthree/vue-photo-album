@@ -35,6 +35,7 @@ const columnsRatios = computed(() => columnsLayout.value?.columnsRatios)
     v-for="(column, columnIndex) in columnsModel"
     :key="`column-${columnIndex}`"
     :layout-options="layoutOptions"
+    :column-data="column"
     :column-index="columnIndex"
     :columns-count="columnsCount"
     :columns-gaps="columnsGaps"

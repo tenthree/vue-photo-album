@@ -1,23 +1,15 @@
 <script setup lang="ts" generic="T extends Photo = Photo">
-import type { Component } from 'vue'
 import { CSSProperties, ImgHTMLAttributes, computed, shallowRef } from 'vue'
 import {
   LayoutOptions,
   Photo,
   PhotoLayout,
+  PhotoRendererProps,
   PhotoRendererMetadata
 } from '@/types'
 import round from '@/utils/round'
 
-type PhotoRendererProps = {
-  photo: T
-  layout: PhotoLayout
-  layoutOptions: LayoutOptions
-  renderer?: Component<PhotoRendererMetadata>
-  clickable?: boolean
-}
-
-const props = defineProps<PhotoRendererProps>()
+const props = defineProps<PhotoRendererProps<T>>()
 
 function calcWidth(
   base: string,
@@ -123,7 +115,7 @@ const imageProps = computed<ImgHTMLAttributes>(() => {
   const loading = 'lazy'
   const decoding = 'async'
   return {
-    className,
+    class: className,
     src,
     alt,
     title,
@@ -135,6 +127,7 @@ const imageProps = computed<ImgHTMLAttributes>(() => {
 })
 
 const metadata = computed<PhotoRendererMetadata>(() => ({
+  layoutOptions: props.layoutOptions,
   photo: props.photo,
   layout: props.layout,
   clickable: props.clickable,

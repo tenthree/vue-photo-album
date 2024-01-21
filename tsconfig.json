@@ -25,6 +25,7 @@
       "@/*": ["./src/*"]
     }
   },
+  "exclude": ["examples"],
   // "include": [
   //   "src/**/*.ts",
   //   "src/**/*.vue"

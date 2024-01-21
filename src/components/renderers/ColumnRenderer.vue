@@ -1,19 +1,15 @@
 <script setup lang="ts" generic="T extends Photo = Photo">
-import { ColumnsLayoutOptions, Photo } from '@/types'
-import type { Component } from 'vue'
-import { CSSProperties, computed } from 'vue'
+import {
+  ColumnRendererMetadata,
+  ColumnRendererProps,
+  ColumnsLayoutOptions,
+  Photo
+} from '@/types'
+import type { CSSProperties } from 'vue'
+import { computed } from 'vue'
 import round from '@/utils/round'
 
-type ColumnFrameProps = {
-  layoutOptions: ColumnsLayoutOptions
-  columnIndex: number
-  columnsCount: number
-  columnsGaps?: number[]
-  columnsRatios?: number[]
-  renderer?: Component
-}
-
-const props = defineProps<ColumnFrameProps>()
+const props = defineProps<ColumnRendererProps>()
 
 function cssJustifyContent(layoutOptions: ColumnsLayoutOptions) {
   return layoutOptions.layout === 'columns' ? 'space-between' : 'flex-start'
@@ -25,7 +21,7 @@ function cssColumnWidth({
   columnsCount,
   columnsGaps,
   columnsRatios
-}: ColumnFrameProps) {
+}: ColumnRendererProps) {
   const { layout, spacing, padding } = layoutOptions
 
   if (
@@ -61,22 +57,32 @@ const style = computed<CSSProperties>(() => {
   const flexFlow = 'column nowrap'
   const alignItems = 'flex-start'
   const justifyContent = cssJustifyContent(props.layoutOptions)
-  const width = cssColumnWidth({
-    layoutOptions: props.layoutOptions,
-    columnIndex: props.columnIndex,
-    columnsCount: props.columnsCount,
-    columnsGaps: props.columnsGaps,
-    columnsRatios: props.columnsRatios
-  })
+  const width = cssColumnWidth(props)
 
   return { display, flexFlow, alignItems, justifyContent, width }
 })
 
 const columnWrapper = computed(() => props.renderer ?? 'div')
+
+const metadata = computed<ColumnRendererMetadata>(() => {
+  return {
+    layoutOptions: props.layoutOptions,
+    columnData: props.columnData,
+    columnIndex: props.columnIndex,
+    columnsCount: props.columnsCount,
+    columnsGaps: props.columnsGaps,
+    columnsRatios: props.columnsRatios
+  }
+})
 </script>
 
 <template>
-  <component :is="columnWrapper" :class="className" :style="style">
+  <component
+    :is="columnWrapper"
+    :class="className"
+    :style="style"
+    v-bind="metadata"
+  >
     <slot />
   </component>
 </template>

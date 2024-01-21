@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends Photo = Photo">
-import type { ComponentPublicInstance } from 'vue'
-import { CSSProperties, computed, ref, toRefs, watch } from 'vue'
+import type { ComponentPublicInstance, CSSProperties } from 'vue'
+import { computed, ref, toRefs, watch } from 'vue'
 import {
   PhotoAlbumProps,
   PhotoAlbumEmits,
@@ -131,7 +131,10 @@ const style = computed<CSSProperties>(() => {
 const containerComponent = computed(() => {
   return {
     is: containerRenderer.value ?? 'div',
-    props: {}
+    props: {
+      photos: photos.value,
+      layoutOptions: layoutOptions.value
+    }
   }
 })
 
@@ -224,12 +227,15 @@ watch(
 </script>
 
 <template>
+  <!-- container -->
   <component
     :is="containerComponent.is"
     :class="className"
     :style="style"
+    v-bind="containerComponent.props"
     ref="containerRef"
   >
+    <!-- layout -->
     <div v-if="isUnknownLayout">Unknown Layout</div>
     <template v-else>
       <component
@@ -237,6 +243,7 @@ watch(
         :is="layoutComponent.is"
         v-bind="layoutComponent.props"
       >
+        <!-- photo -->
         <template #default="slotContext">
           <PhotoRenderer
             v-bind="slotContext"

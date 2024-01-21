@@ -1,16 +1,9 @@
 <script setup lang="ts" generic="T extends Photo = Photo">
-import { Photo, RowsLayoutOptions } from '@/types'
-import type { Component } from 'vue'
-import { CSSProperties, computed } from 'vue'
+import { Photo, RowRendererProps, RowRendererMetadata } from '@/types'
+import type { CSSProperties } from 'vue'
+import { computed } from 'vue'
 
-type RowFrameProps = {
-  layoutOptions: RowsLayoutOptions
-  rowIndex: number
-  rowsCount?: number
-  renderer?: Component
-}
-
-const props = defineProps<RowFrameProps>()
+const props = defineProps<RowRendererProps>()
 
 const className = 'photo-album__row'
 
@@ -27,10 +20,24 @@ const style = computed<CSSProperties>(() => {
 })
 
 const rowWrapper = computed(() => props.renderer ?? 'div')
+
+const metadata = computed<RowRendererMetadata>(() => {
+  return {
+    layoutOptions: props.layoutOptions,
+    rowData: props.rowData,
+    rowIndex: props.rowIndex,
+    rowsCount: props.rowsCount
+  }
+})
 </script>
 
 <template>
-  <component :is="rowWrapper" :class="className" :style="style">
+  <component
+    :is="rowWrapper"
+    :class="className"
+    :style="style"
+    v-bind="metadata"
+  >
     <slot />
   </component>
 </template>

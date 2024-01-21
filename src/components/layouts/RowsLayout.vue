@@ -28,8 +28,9 @@ const rowsLayout = computed(() =>
     v-for="(row, rowIndex) in rowsLayout"
     :key="`row-${rowIndex}`"
     :layout-options="layoutOptions"
+    :row-data="row"
     :row-index="rowIndex"
-    :rows-count="rowsLayout?.length"
+    :rows-count="rowsLayout?.length ?? 0"
     :renderer="rowRenderer"
   >
     <template v-for="{ photo, layout } in row" :key="photo.key || photo.src">
