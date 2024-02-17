@@ -37,12 +37,35 @@
     "access": "public",
     "provenance": true
   },
+  "keywords": [
+    "vue",
+    "image",
+    "photo",
+    "album",
+    "gallery",
+    "grid",
+    "masonry",
+    "photo album",
+    "photo gallery",
+    "image gallery",
+    "photo layout",
+    "image layout",
+    "vue gallery",
+    "vue photo album",
+    "vue photo gallery",
+    "vue image gallery",
+    "vue-photo-album",
+    "vue-photo-gallery"
+  ],
   "scripts": {
     "dev": "vite --config dev/vite.config.ts",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview --config dev/vite.config.ts"
+    "preview": "vite preview --config dev/vite.config.ts",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "vue": "^3.3.0"
@@ -56,10 +79,12 @@
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.17.0",
+    "photoswipe": "^5.4.3",
     "prettier": "^3.1.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-dts": "^3.7.0",
+    "vitepress": "^1.0.0-rc.40",
     "vue-tsc": "^1.8.22"
   },
   "peerDependencies": {
