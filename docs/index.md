@@ -16,15 +16,15 @@ hero:
 
 features:
   - icon:
-      src: ./assets/photo.svg
+      src: /photo.svg
     title: Responsive image
     details: Automatically generates srcset for the img tag.
   - icon:
-      src: ./assets/support.svg
+      src: /support.svg
     title: Customizable component
     details: Allows customization of container, row, column, and photo renderers.
   - icon:
-      src: ./assets/scroll.svg
+      src: /scroll.svg
     title: SSR friendly
     details: Renders img HTML content on the server side.
 ---
