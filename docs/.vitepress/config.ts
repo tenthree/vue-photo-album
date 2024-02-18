@@ -1,16 +1,31 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
-const baseUrl = '/vue-photo-album/'
+const BASE_URL = '/vue-photo-album/'
+
+const GTAG_ID = 'G-FLRD83MW2R'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: baseUrl,
+  base: BASE_URL,
+  lang: 'en-US',
   title: "Vue Photo Album",
   description: "Responsive photo gallery for Vue3",
 
   head: [
-    ['link', { rel: 'icon', href: `${baseUrl}/favicon.svg` }]
+    ['link', { rel: 'icon', href: `${BASE_URL}/favicon.svg` }],
+    [
+      'script',
+      { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}` }
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', ${GTAG_ID});`
+    ]
   ],
 
   themeConfig: {
