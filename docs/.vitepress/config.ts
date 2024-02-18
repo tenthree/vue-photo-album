@@ -80,5 +80,9 @@ export default defineConfig({
     }
   },
 
-  cleanUrls: false
+  cleanUrls: true,
+  lastUpdated: true,
+  sitemap: {
+    hostname: 'https://tenthree.github.io/vue-photo-album/'
+  }
 })
