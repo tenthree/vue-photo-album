@@ -5,10 +5,22 @@ It supports rows, columns, and masonry layouts and customizable renderer compone
 Inspired by [Igor Danchenko](https://github.com/igordanchenko) / [react-photo-album](https://github.com/igordanchenko/react-photo-album).
 
 [![NPM Version](https://img.shields.io/npm/v/vue-photo-album.svg?color=41B883)](https://www.npmjs.com/package/vue-photo-album)
-
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/vue-photo-album.svg?color=41B883)](https://bundlephobia.com/package/vue-photo-album)
-
 [![License MIT](https://img.shields.io/npm/l/vue-photo-album.svg?color=41B883)](https://github.com/tenthree/vue-photo-album/blob/main/LICENSE)
+
+## Layouts
+
+* Rows
+
+  <img src="https://github.com/tenthree/vue-photo-album/assets/3132794/578b5f5d-0027-42b9-aeb2-58958feceb3b" width="300" alt="rows layout">
+
+* Columns
+
+  <img src="https://github.com/tenthree/vue-photo-album/assets/3132794/9acef743-3741-4261-a2f4-ea166f4d698c" width="300" alt="columns layout">
+
+* Masonry
+
+  <img src="https://github.com/tenthree/vue-photo-album/assets/3132794/59170b1a-cef9-4d41-80c3-4eafe9f6af00" width="300" alt="masonry layout">
 
 ## Install
 
