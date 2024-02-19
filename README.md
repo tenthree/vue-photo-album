@@ -4,6 +4,12 @@ Vue Photo Album is a responsive photo gallery component for `Vue 3`.
 It supports rows, columns, and masonry layouts and customizable renderer components.
 Inspired by [Igor Danchenko](https://github.com/igordanchenko) / [react-photo-album](https://github.com/igordanchenko/react-photo-album).
 
+[![NPM Version](https://img.shields.io/npm/v/vue-photo-album.svg?color=41B883)](https://www.npmjs.com/package/vue-photo-album)
+
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/vue-photo-album.svg?color=41B883)](https://bundlephobia.com/package/vue-photo-album)
+
+[![License MIT](https://img.shields.io/npm/l/vue-photo-album.svg?color=41B883)](https://github.com/tenthree/vue-photo-album/blob/main/LICENSE)
+
 ## Install
 
 ```bash
