@@ -33,7 +33,10 @@ features:
 import { ref } from 'vue'
 import CustomPhotoWithAuthor from './components/CustomPhotoWithAuthor.vue'
 
-const sizes = ref({})
+const sizes = ref({
+  size: '100vw'
+})
+
 const rowConstraints = (containerWidth) => {
   if (containerWidth >= 900) {
     return undefined

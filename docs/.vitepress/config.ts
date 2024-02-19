@@ -24,7 +24,7 @@ export default defineConfig({
       `window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', ${GTAG_ID});`
+      gtag('config', '${GTAG_ID}');`
     ]
   ],
 

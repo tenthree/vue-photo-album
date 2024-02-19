@@ -61,8 +61,8 @@ function srcSetAndSizes<T extends Photo = Photo>(
       : undefined
 
   const sizes =
-    layoutOptions?.sizes?.sizes !== undefined
-      ? layoutOptions.sizes.sizes
+    layoutOptions?.sizes !== undefined
+      ? (layoutOptions.sizes.sizes ?? [])
           .map(
             ({ viewport, size }) =>
               `${viewport} ${calculateSizesValue(size, layout, layoutOptions)}`
