@@ -140,7 +140,7 @@ export type CommonLayoutOptions = {
 export type RowsLayoutOptions = CommonLayoutOptions & {
   layout: Extract<LayoutType, 'rows'>
   targetRowHeight: number
-  rowConstraints: RowConstraints
+  rowConstraints?: RowConstraints
 }
 
 export type ColumnsLayoutOptions = CommonLayoutOptions & {
