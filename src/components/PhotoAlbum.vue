@@ -151,9 +151,6 @@ const style = computed<CSSProperties>(() => {
         }, initWidth)
       )
     }
-    console.log('singleRowMaxHeight', singleRowMaxHeight)
-    console.log('limitedWidth', limitedWidth)
-    console.log('targetRowHeight', layoutOptions.value.targetRowHeight)
   }
 
   const maxWidth =
