@@ -1,44 +1,122 @@
+import { Photo } from '@/index'
+import photos from './unsplash-with-author.json'
+
+export type PhotoAuthor = {
+  name: string
+  link: string
+}
+
+export type AlbumPhoto = {
+  id: string
+  key: string
+  slug: string
+  width: number
+  height: number
+  index?: number
+  author?: PhotoAuthor
+}
+
+export type GetPhotosOptions = ImageUrlOptions & {
+  limited?: number
+  withSrcset?: boolean
+  withAuthor?: boolean
+}
+
+export type ImageUrlOptions = {
+  withNuxtImage?: boolean
+  withIpx?: boolean
+  withUnsplashSourceDomain?: boolean
+  withFakeImgDomain?: boolean
+  fakeImgOptions?: FakeImgOptions
+}
+
+export type FakeImgOptions = {
+  bgColor?: string
+  textColor?: string
+  text?: string | ((photo: AlbumPhoto) => string)
+}
+
+const defaultPhotos: AlbumPhoto[] = [...photos]
+
 const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48]
 
-const unsplashLink = (id: string, width: number, height: number) =>
-  `https://source.unsplash.com/${id}/${width}x${height}`
+const createImageUrl = (photo: AlbumPhoto, options?: ImageUrlOptions) => {
+  const { id, key, width: w, height: h } = photo
+  const {
+    withNuxtImage = false,
+    withIpx = false,
+    withUnsplashSourceDomain = false,
+    withFakeImgDomain = false,
+    fakeImgOptions = {}
+  } = options ?? {}
+  if (withNuxtImage) {
+    return withIpx ? `/${id}.jpeg` : id
+  }
+  if (withFakeImgDomain) {
+    let {
+      bgColor = 'cccccc',
+      textColor = '909090',
+      text = undefined
+    } = fakeImgOptions
+    bgColor = bgColor.replace(/^#/, '')
+    textColor = textColor.replace(/^#/, '')
+    text = encodeURIComponent(
+      typeof text === 'function' ? text(photo) : text ?? `#${photo.index}`
+    )
+    return `https://fakeimg.pl/${w}x${h}/${bgColor}/${textColor}/?text=${text}&font=noto`
+  }
+  return withUnsplashSourceDomain
+    ? `https://source.unsplash.com/${key}/${w}x${h}`
+    : `https://images.unsplash.com/${id}?w=${w}&h=${h}`
+}
 
-const unsplashPhotos = [
-  { id: '8gVv6nxq6gY', width: 1080, height: 800 },
-  { id: 'Dhmn6ete6g8', width: 1080, height: 1620 },
-  { id: 'RkBTPqPEGDo', width: 1080, height: 720 },
-  { id: 'Yizrl9N_eDA', width: 1080, height: 721 },
-  { id: 'KG3TyFi0iTU', width: 1080, height: 1620 },
-  { id: 'Jztmx9yqjBw', width: 1080, height: 607 },
-  { id: '-heLWtuAN3c', width: 1080, height: 608 },
-  { id: 'xOigCUcFdA8', width: 1080, height: 720 },
-  { id: '1azAjl8FTnU', width: 1080, height: 1549 },
-  { id: 'ALrCdq-ui_Q', width: 1080, height: 720 },
-  { id: 'twukN12EN7c', width: 1080, height: 694 },
-  { id: '9UjEyzA6pP4', width: 1080, height: 1620 },
-  { id: 'sEXGgun3ZiE', width: 1080, height: 720 },
-  { id: 'S-cdwrx-YuQ', width: 1080, height: 1440 },
-  { id: 'q-motCAvPBM', width: 1080, height: 1620 },
-  { id: 'Xn4L310ztMU', width: 1080, height: 810 },
-  { id: 'iMchCC-3_fE', width: 1080, height: 610 },
-  { id: 'X48pUOPKf7A', width: 1080, height: 160 },
-  { id: 'GbLS6YVXj0U', width: 1080, height: 810 },
-  { id: '9CRd1J1rEOM', width: 1080, height: 720 },
-  { id: 'xKhtkhc9HbQ', width: 1080, height: 1440 }
-]
+export const rand = <T>(source: T[]) => {
+  const arr = source.slice()
+  for (let i = arr.length - 1; i >= 0; i -= 1) {
+    const r = Math.floor(Math.random() * i)
+    ;[arr[i], arr[r]] = [arr[r], arr[i]]
+  }
+  return arr
+}
 
-const photos = unsplashPhotos.map((photo) => ({
-  src: unsplashLink(photo.id, photo.width, photo.height),
-  width: photo.width,
-  height: photo.height,
-  srcSet: breakpoints.map((breakpoint) => {
-    const height = Math.round((photo.height / photo.width) * breakpoint)
-    return {
-      src: unsplashLink(photo.id, breakpoint, height),
-      width: breakpoint,
-      height
-    }
-  })
-}))
+export const getPhotos = (options?: GetPhotosOptions) => {
+  const {
+    limited,
+    withSrcset = false,
+    withAuthor = false,
+    withFakeImgDomain = false
+  } = options ?? {}
+  return defaultPhotos
+    .slice(0, limited)
+    .map<Photo & { id?: string; slug?: string; author?: PhotoAuthor }>(
+      (photo, index) => {
+        const photoWithIndex = { ...photo, index }
+        return {
+          src: createImageUrl(photoWithIndex, options),
+          key: photo.key,
+          width: photo.width,
+          height: photo.height,
+          srcSet: withSrcset
+            ? breakpoints.map((breakpoint) => {
+                const width = breakpoint
+                const height = Math.round(
+                  (photo.height / photo.width) * breakpoint
+                )
+                const rwdPhoto = { ...photoWithIndex, width, height }
+                const src = createImageUrl(rwdPhoto, options)
+                return { src, width, height }
+              })
+            : undefined,
+          ...(withAuthor && !withFakeImgDomain
+            ? {
+                id: photo.id,
+                slug: photo.slug,
+                author: photo.author
+              }
+            : undefined)
+        }
+      }
+    )
+}
 
-export default photos
+export default getPhotos({ withUnsplashSourceDomain: true })

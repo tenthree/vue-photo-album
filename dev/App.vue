@@ -5,15 +5,18 @@ import CustomContainer from './CustomContainer.vue'
 import CustomRow from './CustomRow.vue'
 import CustomColumn from './CustomColumn.vue'
 import CustomPhoto from './CustomPhoto.vue'
-import photos from './photos'
+import { getPhotos } from './photos'
 
 import { PhotoAlbum } from '@/index'
 
+const photos = getPhotos({ withUnsplashSourceDomain: true, withSrcset: true })
 const layout = ref<LayoutType>(LayoutTypes[0])
 const padding = ref<number>(0)
 const spacing = ref<number>(0)
 const rowHeight = ref<number>(200)
+const applyRowHeigh = ref<boolean>()
 const columns = ref<number>(5)
+const applyColumns = ref<boolean>()
 const isCustomContanier = ref<boolean>()
 const isCustomRow = ref<boolean>()
 const isCustomColumn = ref<boolean>()
@@ -55,6 +58,7 @@ const isCustomPhoto = ref<boolean>()
       </div>
       <div v-if="layout === LayoutTypes[0]">
         <label>
+          <input type="checkbox" v-model="applyRowHeigh" />
           <span>Row Height</span>
           <input type="range" min="50" max="500" v-model="rowHeight" />
           <span>{{ rowHeight }} / 500</span>
@@ -62,6 +66,7 @@ const isCustomPhoto = ref<boolean>()
       </div>
       <div v-if="layout === LayoutTypes[1] || layout === LayoutTypes[2]">
         <label>
+          <input type="checkbox" v-model="applyColumns" />
           <span>Columns</span>
           <input type="range" min="1" max="10" v-model="columns" />
           <span>{{ columns }} / 10</span>
@@ -70,7 +75,8 @@ const isCustomPhoto = ref<boolean>()
       <div
         :style="{
           display: 'inline-flex',
-          gap: '30px'
+          gap: '30px',
+          flexBasis: '100%'
         }"
       >
         <span>Custom</span>
@@ -98,8 +104,8 @@ const isCustomPhoto = ref<boolean>()
       :layout="layout"
       :padding="padding"
       :spacing="spacing"
-      :target-row-height="rowHeight"
-      :columns="columns"
+      :target-row-height="applyRowHeigh ? rowHeight : undefined"
+      :columns="applyColumns ? columns : undefined"
       @click="(payload) => console.log(payload)"
       :container-renderer="isCustomContanier ? CustomContainer : undefined"
       :row-renderer="isCustomRow ? CustomRow : undefined"
