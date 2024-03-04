@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { URL, fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { defineConfig } from 'vite'
@@ -35,5 +36,8 @@ export default defineConfig({
         exports: 'named'
       }
     }
+  },
+  test: {
+    environment: 'jsdom'
   }
 })

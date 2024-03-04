@@ -32,8 +32,8 @@ jobs:
       - name: Install semantic-release extra plugin
         run: npm install -D @semantic-release/changelog @semantic-release/github
 
-      # - name: Test
-      #   run: npm run test
+      - name: Test
+        run: npm run test -- --run
 
       - name: Build
         run: npm run build
