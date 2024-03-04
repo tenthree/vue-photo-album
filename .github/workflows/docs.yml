@@ -1,4 +1,4 @@
-name: Deploy vitepress docs to pages
+name: Deploy docs to pages
 
 on:
   push:
