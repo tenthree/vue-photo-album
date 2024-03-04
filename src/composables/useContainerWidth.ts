@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance, Ref } from 'vue'
-import { ref, unref, watch } from 'vue'
+import { onUnmounted, ref, unref, watch } from 'vue'
 
 function resolveContainerWidth(
   element?: HTMLElement,
@@ -76,6 +76,10 @@ export default function useContainerWidth(
       flush: 'post'
     }
   )
+
+  onUnmounted(() => {
+    disconnect()
+  })
 
   return { containerWidth }
 }
