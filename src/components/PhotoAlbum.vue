@@ -98,7 +98,7 @@ function resolveLayoutOptions<T extends Photo>({
     case Columns:
     case Masonry: {
       return Object.assign({}, commonOptions, columnsOptions, {
-        layout: Columns
+        layout: layout === Columns ? Columns : Masonry
       }) satisfies ColumnsLayoutOptions
     }
     default:
