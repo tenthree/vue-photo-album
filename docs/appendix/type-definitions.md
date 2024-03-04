@@ -163,7 +163,7 @@ type LayoutOptions = RowsLayoutOptions | ColumnsLayoutOptions
 type RowsLayoutOptions = CommonLayoutOptions & {
   layout: Extract<LayoutType, 'rows'>
   targetRowHeight: number
-  rowConstraints: RowConstraints
+  rowConstraints?: RowConstraints
 }
 
 type ColumnsLayoutOptions = CommonLayoutOptions & {
