@@ -286,7 +286,7 @@ import CustomPhoto from './CustomPhoto.vue'
 <template>
   <PhotoAlbum
     layout="rows"
-    :column-renderer="CustomPhoto"
+    :photo-renderer="CustomPhoto"
   />
 </template>
 ```
